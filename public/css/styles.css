@@ -1,6 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+:root {
+  --primary-color: #013F4E;
+  --secondary-color: #00718F;
+  --accent1-color: #1194c4;
+  --accent2-color: #e1eaec;
+  --accent1light-color: #e1f1f4;
+
+  --accent-font: "Anton",  sans-serif;
+  --paragraph-font: 'Raleway', sans-serif;
+  --shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  font-family: var(--paragraph-font);
+  color: black;
+}
+
+body {
+  background-color: white;
+  width: 100vw;
+  margin: 0;
+}
+
+main {
+  margin: 5px;
+}
+
+
+h2 {
+  font-family: var(--accent-font);
+  font-size: 1.8rem;
+}
+
+a,
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  background-color: var(--accent1-color);
+  color: white;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  border: var(--secondary-color) 3px solid;
+  border-style: outset;
+  padding: 10px;
+  cursor: pointer;
+}
+
+button:hover,
+.submitBtn:hover {
+  filter: brightness(110%);
+}
+
+button:active,
+.submitBtn:active {
+  border-style: inset;
+}
+
 /******* Change Box Model ***************/
 *,
 *:before,
 *:after {
   box-sizing: border-box;
+}
+
+/* ============= Header ============= */
+
+#top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 5px;
+}
+
+.siteName {
+  font-family: var(--accent-font);
+  font-weight: 400;
+  font-style: normal;
+  font-size: 30px;
+  color: black;
+}
+
+#tools a {
+  text-transform: uppercase;
+}
+
+/* ============= Navigation ============= */
+
+nav ul{
+  display: flex;
+  justify-content: space-evenly;
+  background-color: black;
+  color: white;
+  list-style: none;
+  font-weight: bold;
+  padding-inline-start: 0;
+}
+
+nav li {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+nav a {
+  display: block;
+  padding: 10px;
+}
+
+nav li:hover {
+  color: var(--accent2-color);
+}
+
+
+/* ============= Hero Image ============= */
+.hero-img {
+  position: relative;
+  width: 100%;
+  font-size: 1.3rem;
+}
+
+.hero-img img {
+  display: block;
+  width: 70%;
+  height: auto;
+  margin: auto auto;
+}
+
+.hero-txt {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  top: 0%;
+  left: 10%;
+  color: var(--accent1-color);
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.hero-txt p {
+  font-size: 1.2rem;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+.hero-txt ul {
+  list-style: none;
+  padding-inline-start: 0px;
+  font-size: 1rem;
+}
+
+/* ============= Sections: Upgrades & Reviews ============= */
+#section-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: 30px 5% 30px 5%;
+  column-gap: 50px;
+}
+
+#reviews ul {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding-inline-start: 10px;
+}
+
+#upgrade-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 5px;
+  column-gap: 15px;
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 70% 30%;
+  text-align: center;
+}
+
+.cardimg {
+  width: 100%;
+  box-shadow: var(--shadow);
+  padding: 10px 0;
+  border: solid 3px var(--accent1-color);
+}
+
+.cardimg img {
+  width: auto;
+  height: 100%;
+}
+
+.card p {
+  margin-block-start: 0;
+  margin: 5px;
+  font-family: var(--accent-font);
+  letter-spacing: 1px;
+}
+
+@media screen and (min-width:800px) {
+  html {
+      background: url('/images/site/small_check.jpg') repeat;
+  }
+
+  h2 {
+    letter-spacing: 3px;
+  }
+
+  body {
+    border: var(--accent1-color) solid 4px;
+    border-radius: 10px;
+    width: 80vw;
+    padding: 10px;
+    margin: 20px auto;
+  }
+
+  #top-header {
+    margin: 0;
+  }
+
+  main {
+    margin: 0;
+  }
+
+  .hero-txt {
+    top: 10%;
+  }
+
+  .hero-txt ul {
+    font-size: 1.4rem;
+  }
+
+  .hero-txt p {
+    font-size: 1.6rem;
+  }
+
+  button {
+    margin: 10px;
+    font-size: 1.5rem;
+  }
+
+  #section-container {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #reviews {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  #upgrades {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  #reviews ul {
+    font-size: 1.4rem;
+    line-height: 3rem;
+  }
 }
