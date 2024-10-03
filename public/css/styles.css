@@ -66,6 +66,35 @@ button:active,
   box-sizing: border-box;
 }
 
+/* ============= Error ============= */
+#errorEngine {
+  width: 80%;
+  margin: auto auto;
+  text-align: center;
+}
+
+#errorEngine img{
+  width: 100%;
+  max-width: 250px;
+  margin: auto auto;
+  animation: flickering 3s;
+}
+
+#errorEngine p {
+  font-family: var(--accent-font);
+  font-size: 1.5em;
+}
+
+@keyframes flickering {
+  0% {opacity: 0;}
+  10% {opacity: 0.4;}
+  40% {opacity: 0.6;}
+  50% {opacity: 0;}
+  90% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+
 /* ============= Header ============= */
 
 #top-header {
