@@ -202,6 +202,82 @@ nav li:hover {
   letter-spacing: 1px;
 }
 
+/* ============= Sections: Inventory ============= */
+#inv-display {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  row-gap: 30px;
+  column-gap: 20px;
+  list-style-type: none;
+  padding-inline-start: 0px;
+  margin: 20px;
+}
+
+#inv-display li a{
+  display: block;
+  width: 80%;
+  height: 80%;
+  overflow: hidden;
+}
+
+#inv-display img {
+  width: 105%;
+  height: auto;
+  position: absolute;
+  top: -9999px;
+  bottom: -9999px;
+  left: -9999px;
+  right: -9999px;
+  margin: auto;
+  border-radius: 5px;
+}
+
+#inv-display li {
+  width: 100%;
+  box-shadow: var(--shadow);
+  border-radius: 5px;
+  background: white;
+}
+
+#inv-display li:hover {
+  transform: scale(115%);
+  z-index: 1;
+}
+
+#inv-display li>a {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: black;
+}
+
+.namePrice {
+  display: grid;
+  grid-template-areas: 'hr hr hr' 'name name price';
+  padding: 0 15px 15px 15px;
+}
+
+.namePrice hr {
+  grid-area: hr;
+}
+
+.namePrice h2 {
+  grid-area: name;
+  height: fit-content;
+  letter-spacing: 1.2px;
+  font-size: 1.2em;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+}
+
+.namePrice span {
+  grid-area: price;
+  font-size: 1.5em;
+}
+
 @media screen and (min-width:800px) {
   html {
       background: url('/images/site/small_check.jpg') repeat;
