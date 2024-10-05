@@ -59,6 +59,12 @@ button:active,
   border-style: inset;
 }
 
+#errorlink {
+  text-decoration: underline;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
 /******* Change Box Model ***************/
 *,
 *:before,
@@ -269,7 +275,7 @@ nav li:hover {
 }
 
 #inv-display li:hover {
-  transform: scale(115%);
+  transform: scale(1.2);
   z-index: 1;
 }
 
@@ -305,6 +311,93 @@ nav li:hover {
 .namePrice span {
   grid-area: price;
   font-size: 1.5em;
+}
+
+/* ============= Sections: Inventory Detail ============= */
+div#inv_details {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 30px;
+  margin: 10px;
+}
+
+#inv_photos {
+  margin: auto auto;
+}
+
+#inv_photos img {
+  width: 100%;
+  height: auto;
+  border: solid black 2px;
+  border-radius: 5px;
+  box-shadow: var(--shadow)
+}
+
+#inv_details h2 {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
+
+#details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  font-family: var(--accent-font);
+  letter-spacing: 1px;
+}
+
+#details p {
+  margin-block-start: 10px;
+  margin-block-end: 0;
+}
+
+#details span {
+  font-size: 1.4em;
+}
+
+#price {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+#price p {
+  text-align: center;
+  background-color: var(--accent1-color);
+  color: white;
+  border-radius: 5px;
+  letter-spacing: 2px;
+  vertical-align: middle;
+  line-height: 2em;
+}
+
+#price span {
+  font-family: var(--accent-font);
+  font-size: 1.5em;
+}
+
+#desc {
+  background-color: #f4f2f2;
+  padding: 10px 20px;
+  border-radius: 5px;
+
+}
+
+#desc p:first-child {
+  font-family: var(--accent-font);
+  font-size: 1.5em;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  letter-spacing: 1px;
+}
+
+#desc p:last-child {
+  font-size: 1.2em;
 }
 
 @media screen and (min-width:800px) {
@@ -366,5 +459,38 @@ nav li:hover {
   #reviews ul {
     font-size: 1.4rem;
     line-height: 3rem;
+  }
+  div#inv_details {
+    grid-template-columns: 1fr 1fr;
+  }
+  #details {
+    flex-direction: row;
+    justify-content: space-evenly;
+    border: black solid 1px;
+    border-radius: 5px;
+    margin: 10px 0;
+  }
+  #details p {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding: 15px;
+  }
+
+  #details span {
+    text-wrap: nowrap;
+  }
+
+  #price p {
+    line-height: 1.7em;
+    text-wrap: nowrap;
+  }
+
+  #price span {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    margin: 5px;
+    border: var(--accent1-color) 2px solid;
+    border-radius: 5px;
   }
 }
