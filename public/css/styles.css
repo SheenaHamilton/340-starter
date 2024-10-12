@@ -429,7 +429,6 @@ div#inv_details {
 /* ============= Sections: Form Elements ============= */
 form {
   display: block;
-  width: 50%;
   padding: .5rem 3%;
   background-color: var(--accent2-color);
   border-radius: 5px;
@@ -616,5 +615,9 @@ form #showpwd::before {
     margin: 5px;
     border: var(--accent1-color) 2px solid;
     border-radius: 5px;
+  }
+
+  form {
+    width: 50%;
   }
 }
