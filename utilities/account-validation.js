@@ -106,7 +106,7 @@ validate.loginRules = () => {
                 minSymbols: 1,
             })
             .withMessage("Password does not meet requirements."),
-            
+
     ]
 }
 

@@ -52,7 +52,7 @@ Util.buildClassificationGrid = async function (data) {
         })
         grid += '</ul>'
     } else {
-        grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
+        grid = '<p class="notice">Sorry, no matching vehicles could be found.</p>'
     }
     return grid
 }
@@ -87,9 +87,24 @@ Util.buildInventoryDetail = async function (data) {
         </div>`
 
     } else {
-        detailPage += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
+        detailPage = '<p class="notice">Sorry, no matching vehicles could be found.</p>'
     }
     return detailPage
+}
+
+/* ************************
+ * Constructs the Classification HTML select
+ ************************** */
+Util.buildClassificationSelect = async function (req, res, next) {
+    let data = await invModel.getClassifications()
+    let selectlist = `<label class='top' for="classification_id">Classification</label>
+                      <select name="classification_id" id="classification_id" required>
+                      <option value = "">Choose Classification</option>`
+    data.rows.forEach((row) => {
+        selectlist += `<option value="${row.classification_id}">${row.classification_name}</option>`
+    })
+    selectlist += `</select>`
+    return selectlist
 }
 
 /* ****************************************
