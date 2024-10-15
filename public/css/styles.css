@@ -541,6 +541,7 @@ input::-webkit-inner-spin-button {
 
 .listButtons li{
   display: inline-block;
+  line-height: 60px;
 }
 
 .listButtons .button {
