@@ -1,4 +1,5 @@
 const showpwd = document.querySelector("#showpwd");
+
 showpwd.addEventListener("click", function () {
     const pswdInput = document.getElementById("account_password");
     const eyeIcon = document.getElementById("showpwd");

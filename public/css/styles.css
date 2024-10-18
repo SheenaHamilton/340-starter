@@ -38,6 +38,7 @@ a:active {
   color: inherit;
 }
 
+
 button {
   background-color: var(--accent1-color);
   color: white;
@@ -63,6 +64,10 @@ button:active,
   text-decoration: underline;
   color: var(--primary-color);
   font-weight: bold;
+}
+
+footer {
+  margin: 50px 0 0 0;
 }
 
 /******* Change Box Model ***************/
@@ -447,7 +452,8 @@ form .top {
 }
 
 form input,
-form select {
+form select,
+form textarea {
   --webkit-appearance: none;
   display: block;
   font-size: 1rem;
@@ -472,22 +478,28 @@ form select {
   padding: 2px;
 }
 
-.button:hover {
+.button:hover:enabled {
   filter: brightness(1.3);
 }
 
-.button:active {
+.button:active:enabled {
   border-color: var(--accent1-color);
   border-style: inset;
 }
 
+.button:disabled {
+  background-color: dimgrey;
+}
+
 form input:required,
-form select:required {
+form select:required,
+form textarea:required {
   border-left: rgb(185 4 4) solid 6px;
 }
 
 form input:required:valid,
-form select:required:valid {
+form select:required:valid,
+form textarea:required:valid {
   border-left: var(--accent1-color) solid 6px;
 }
 
@@ -532,6 +544,10 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
+form textarea {
+  height: 100px;
+  font-family: var(--paragraph-font);
+}
 
 /* ============= Sections: Inventory Management ============= */
 .listButtons {
@@ -556,9 +572,80 @@ input::-webkit-inner-spin-button {
     color: white;
 }
 
-footer {
-  margin: 50px 0 0 0;
+#manage, #add {
+  padding: .5rem 3%;
+
 }
+
+#manage {
+  background-color: var(--accent2-color);
+  border-radius: 5px;
+}
+
+#manage select {
+  --webkit-appearance: none;
+  font-size: 1rem;
+  border: solid 1px var(--primary-color);
+  border-radius: 5px;
+  padding: .7rem 2% .7rem 2%;
+  width: fit-content;
+  max-width: 90%;
+  margin: 10px 10px 20px 10px;
+}
+
+#manage label {
+  margin-top: 20px;
+  color: var(--primary-color);
+  font-size: 1.3rem;
+  margin: 1rem auto 0 auto;
+}
+
+#inventoryDisplay {
+  line-height: 45px;
+  border-collapse: collapse;
+}
+
+#inventoryDisplay thead{
+    font-weight: bold;
+    text-align: left;
+    font-size: 1.1em;
+    border-bottom: solid black 2px;
+}
+
+#inventoryDisplay thead th{
+  background-color: white;
+  padding: 0 20px;
+  border-radius: 10px 10px 0px 0px;
+}
+
+#inventoryDisplay tbody tr {
+  border-top: solid black 1px;
+  background-color: white;
+}
+
+#inventoryDisplay td {
+  padding: 0 20px;
+  font-size: 1.1em;
+}
+
+#inventoryDisplay a {
+  padding: 5px 15px;
+  background-color: white;
+  font-weight: bold;
+  border: var(--secondary-color) 2px solid;
+  border-radius: 10px;
+}
+
+#inventoryDisplay a:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+#inventoryDisplay a:active {
+  border-style: inset;
+}
+
+
 @media screen and (min-width:800px) {
   html {
       background: url('/images/site/small_check.jpg') repeat;

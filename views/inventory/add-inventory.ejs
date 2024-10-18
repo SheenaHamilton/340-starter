@@ -27,8 +27,8 @@
         <input type='text' id='inv_year' name='inv_year' placeholder='YYYY' pattern='^(19|20)\d{2}$' required value='<%= locals.inv_year %>'>
 
         <label class='top' for='inv_description'>Description</label>
-        <input type='text' id='inv_description' name='inv_description' required value='<%= locals.inv_description %>'>
-  
+        <textarea id='inv_description' name='inv_description' required><%= locals.inv_description %></textarea>
+
         <label class='top' for='inv_image'>Image</label>
         <input type='text' id='inv_image' name='inv_image' placeholder='images/image.png' pattern='^[a-z_-\s0-9.]+$' required value='<%= locals.inv_image %>'>      
   
