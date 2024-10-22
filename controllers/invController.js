@@ -1,3 +1,4 @@
+const { header } = require("express-validator")
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/")
 
@@ -11,10 +12,13 @@ invCont.buildByClassificationId = async function (req, res, next) {
     const data = await invModel.getInventoryByClassificationId(classification_id)
     const grid = await utilities.buildClassificationGrid(data)
     let nav = await utilities.getNav()
+    const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
+
     const className = await invModel.getClassificationName(classification_id)
     res.render("./inventory/classification", {
         title: className + " vehicles",
         nav,
+        headerLinks,
         grid,
     })
 }
@@ -27,10 +31,12 @@ invCont.buildByInventoryId = async function (req, res, next) {
     const data = await invModel.getInventoryByInvId(inv_id)
     const detailPage = await utilities.buildInventoryDetail(data)
     let nav = await utilities.getNav()
+    const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
     const invName = data.inv_year + ' ' + data.inv_make + ' ' + data.inv_model
     res.render("./inventory/detail", {
         title: invName,
         nav,
+        headerLinks,
         detailPage,
     })
 }
@@ -40,11 +46,13 @@ invCont.buildByInventoryId = async function (req, res, next) {
  * ************************** */
 invCont.buildInvManagement = async function (req, res) {
     const nav = await utilities.getNav()
+    const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
     const classifications = await utilities.buildClassificationSelect()
 
     res.render("./inventory/management", {
         title: "Vehicle Management",
         nav,
+        headerLinks,
         classifications,
         errors: null,
     })
@@ -56,7 +64,13 @@ invCont.buildInvManagement = async function (req, res) {
  * ************************** */
 invCont.buildInvAddClassification = async function (req, res) {
     const nav = await utilities.getNav()
-    res.render("./inventory/add-classification", { title: "Add New Vehicle Classification", nav, errors: null, })
+    const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
+    res.render("./inventory/add-classification", {
+        title: "Add New Vehicle Classification",
+        nav,
+        headerLinks,
+        errors: null,
+    })
 }
 
 
@@ -69,6 +83,7 @@ invCont.addClassification = async function (req, res) {
 
     const addClassificationResult = await invModel.addClassification(classification_name)
     let nav = await utilities.getNav()
+    const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
     const classifications = await utilities.buildClassificationSelect()
 
     if (addClassificationResult) {
@@ -79,6 +94,7 @@ invCont.addClassification = async function (req, res) {
         res.status(201).render("./inventory/management", {
             title: "Vehicle Management",
             nav,
+            headerLinks,
             classifications,
             errors: null,
         })
@@ -87,6 +103,7 @@ invCont.addClassification = async function (req, res) {
         res.status(501).render("/inventory/add-classification", {
             title: "Add New Vehicle Classification",
             nav,
+            headerLinks,
             errors: null,
         })
     }
@@ -97,8 +114,15 @@ invCont.addClassification = async function (req, res) {
  * ************************** */
 invCont.buildAddInventory = async function (req, res) {
     const nav = await utilities.getNav()
+    const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
     const classifications = await utilities.buildClassificationSelect()
-    res.render("./inventory/add-inventory", { title: "Add New Inventory", nav, classifications, errors: null, })
+    res.render("./inventory/add-inventory", {
+        title: "Add New Inventory",
+        nav,
+        headerLinks,
+        classifications,
+        errors: null,
+    })
 }
 
 /* ****************************************
@@ -111,6 +135,7 @@ invCont.addInventory = async function (req, res) {
     const addInventoryResult = await invModel.addInventory(inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id)
     let classifications = await utilities.buildClassificationSelect()
     let nav = await utilities.getNav()
+    const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
 
     if (addInventoryResult) {
         req.flash(
@@ -120,6 +145,7 @@ invCont.addInventory = async function (req, res) {
         res.status(201).render("./inventory/management", {
             title: "Vehicle Management",
             nav,
+            headerLinks,
             classifications,
             errors: null,
         })
@@ -128,6 +154,7 @@ invCont.addInventory = async function (req, res) {
         res.status(501).render("./inventory/add-inventory", {
             title: "Add New Inventory",
             nav,
+            headerLinks,
             errors: null,
             classifications,
             inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id,
@@ -151,6 +178,7 @@ invCont.getInventoryJSON = async (req, res, next) => {
 invCont.buildEditInventory = async function (req, res) {
     const inventory_id = parseInt(req.params.inventory_id)
     const nav = await utilities.getNav()
+    const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
     const itemData = await invModel.getInventoryByInvId(inventory_id)
     const classifications = await utilities.buildClassificationSelect(itemData.classification_id)
     const itemName = `${itemData.inv_make} ${itemData.inv_model}`
@@ -158,6 +186,7 @@ invCont.buildEditInventory = async function (req, res) {
     res.render("./inventory/edit-inventory", {
         title: "Edit " + itemName,
         nav,
+        headerLinks,
         classifications,
         errors: null,
         inv_id: itemData.inv_id,
@@ -179,6 +208,7 @@ invCont.buildEditInventory = async function (req, res) {
  * ************************** */
 invCont.updateInventory = async function (req, res, next) {
     let nav = await utilities.getNav()
+    const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
     const { inv_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color, classification_id, } = req.body
 
     const updateResult = await invModel.updateInventory(inv_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color, classification_id)
@@ -194,6 +224,7 @@ invCont.updateInventory = async function (req, res, next) {
         res.status(501).render("inventory/edit-inventory", {
             title: "Edit " + itemName,
             nav,
+            headerLinks,
             classificationSelect: classifications,
             errors: null,
             inv_id,
@@ -218,12 +249,14 @@ invCont.updateInventory = async function (req, res, next) {
 invCont.buildDeleteInventory = async function (req, res, next) {
     const inventory_id = parseInt(req.params.inventory_id)
     const nav = await utilities.getNav()
+    const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
     const itemData = await invModel.getInventoryByInvId(inventory_id)
     const itemName = `${itemData.inv_make} ${itemData.inv_model}`
 
     res.render("./inventory/delete-confirm", {
         title: "Delete " + itemName,
         nav,
+        headerLinks,
         errors: null,
         inv_id: itemData.inv_id,
         inv_make: itemData.inv_make,
@@ -238,6 +271,7 @@ invCont.buildDeleteInventory = async function (req, res, next) {
  * ************************** */
 invCont.deleteInventory = async function (req, res, next) {
     let nav = await utilities.getNav()
+    const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
     const { inv_id, inv_make, inv_model, inv_price, inv_year } = req.body
 
     const deleteResult = await invModel.deleteInventory(inv_id)
@@ -251,6 +285,7 @@ invCont.deleteInventory = async function (req, res, next) {
         res.status(501).render("inventory/delete-confirm", {
             title: "Delete " + itemName,
             nav,
+            headerLinks,
             errors: null,
             inv_id,
             inv_make,

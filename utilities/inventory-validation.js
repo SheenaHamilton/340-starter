@@ -37,10 +37,12 @@ validate.checkInventoryClassification = async (req, res, next) => {
     errors = validationResult(req)
     if (!errors.isEmpty()) {
         let nav = await utilities.getNav()
+        const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
         res.render("inventory/add-classification", {
             errors,
             title: "Add New Vehicle Classification",
             nav,
+            headerLinks,
             classification_name,
         })
         return
@@ -155,10 +157,12 @@ validate.checkInventory = async (req, res, next) => {
     if (!errors.isEmpty()) {
         let nav = await utilities.getNav()
         let classifications = await utilities.buildClassificationSelect()
+        const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
         res.render("inventory/add-inventory", {
             errors,
             title: "Add New Inventory",
             nav,
+            headerLinks,
             classifications,
             inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id
         })
@@ -175,14 +179,18 @@ validate.checkUpdateData = async (req, res, next) => {
     let errors = []
     errors = validationResult(req)
     const itemName = `${inv_make} ${inv_model}`
+
     if (!errors.isEmpty()) {
         let nav = await utilities.getNav()
+        const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
         let classifications = await utilities.buildClassificationSelect()
+
         res.render("inventory/edit-inventory", {
             errors,
             title: "Edit" + itemName,
             nav,
             classifications,
+            headerLinks,
             inv_id, inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id
         })
         return

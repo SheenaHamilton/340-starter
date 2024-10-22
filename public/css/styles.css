@@ -5,7 +5,7 @@
   --secondary-color: #00718F;
   --accent1-color: #1194c4;
   --accent2-color: #e1eaec;
-  --accent1light-color: #e1f1f4;
+  --accent1light-color: #e9f6f8;
 
   --accent-font: "Anton",  sans-serif;
   --paragraph-font: 'Raleway', sans-serif;
@@ -24,10 +24,17 @@ main {
   margin: 5px;
 }
 
+h1 {
+  font-size: 1.8em;
+}
 
 h2 {
   font-family: var(--accent-font);
-  font-size: 1.8rem;
+  font-size: 1.5rem;
+}
+
+hr {
+  width:95%;
 }
 
 a,
@@ -58,6 +65,19 @@ button:hover,
 button:active,
 .submitBtn:active {
   border-style: inset;
+}
+
+a.button {
+  color: white;
+}
+
+a.button:hover {
+  filter: brightness(1.3);
+}
+
+a.button:active {
+  border-color: var(--accent1-color);
+   border-style: inset;
 }
 
 #errorlink {
@@ -150,10 +170,19 @@ footer {
   color: black;
 }
 
+#tools {
+    text-align: right;
+    line-height: 1.5em;
+}
 #tools a {
   text-transform: uppercase;
+  padding: 0 0 0 20px;
+  font-weight: bold;
 }
 
+#act-firstname {
+  font-weight: normal;
+}
 /* ============= Navigation ============= */
 
 nav ul{
@@ -304,11 +333,6 @@ nav li:hover {
   box-shadow: var(--shadow);
   border-radius: 5px;
   background: white;
-}
-
-#inv-display li:hover {
-  transform: scale(1.2);
-  z-index: 1;
 }
 
 #inv-display li>a {
@@ -467,19 +491,21 @@ form textarea {
 .button {
   background-color: var(--primary-color);
   color: white;
+  width: fit-content;
   font-family: var(--accent-font);
   font-size: 1.1rem;
   letter-spacing: 2px;
-  width: 40%;
   min-width: 150px;
   margin: 20px auto;
   border: var(--primary-color) 5px solid;
   border-radius: 115px;
-  padding: 2px;
+  padding: 2px 20px;
+  text-align: center;
 }
 
 .button:hover:enabled {
   filter: brightness(1.3);
+  cursor: pointer;
 }
 
 .button:active:enabled {
@@ -601,7 +627,6 @@ form textarea {
 }
 
 #inventoryDisplay {
-  line-height: 45px;
   border-collapse: collapse;
 }
 
@@ -624,7 +649,7 @@ form textarea {
 }
 
 #inventoryDisplay td {
-  padding: 0 20px;
+  padding: 10px 20px;
   font-size: 1.1em;
 }
 
@@ -636,15 +661,36 @@ form textarea {
   border-radius: 10px;
 }
 
-#inventoryDisplay a:hover {
-  background-color: var(--primary-color);
-  color: white;
+#accountinfo p {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+#accountinfo h3 {
+  margin-block-start: 10px;
+  margin-block-end: 10px;
 }
 
-#inventoryDisplay a:active {
-  border-style: inset;
+#accountinfo, 
+#invmanagement  {
+  display: block;
+  width: fit-content;
+  padding: 10px 20px;
 }
 
+#accountinfo .button,
+#invmanagement .button{
+  display: block;
+}
+
+.label {
+  font-weight: bold;
+  line-height: 2em;
+}
+
+.label .datafield {
+  font-weight: normal;
+  line-height: 1.4em;
+}
 
 @media screen and (min-width:800px) {
   html {
@@ -652,7 +698,9 @@ form textarea {
   }
 
   h2 {
-    letter-spacing: 3px;
+    letter-spacing: 2.5px;
+    margin-block-start: 0;
+    margin-block-end: 0;
   }
 
   body {
@@ -709,6 +757,12 @@ form textarea {
   div#inv_details {
     grid-template-columns: 1fr 1fr;
   }
+
+  #inv-display li:hover {
+    transform: scale(1.2);
+    z-index: 1;
+  }
+  
   #details {
     flex-direction: row;
     justify-content: space-evenly;
