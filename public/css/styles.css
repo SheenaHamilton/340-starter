@@ -34,7 +34,7 @@ h2 {
 }
 
 hr {
-  width:95%;
+  width:100%;
 }
 
 a,
@@ -78,6 +78,16 @@ a.button:hover {
 a.button:active {
   border-color: var(--accent1-color);
    border-style: inset;
+}
+
+.buttonlink {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.buttonlink:hover {
+  color: var(--secondary-color);
+  font-weight: bolder;
 }
 
 #errorlink {
@@ -456,6 +466,24 @@ div#inv_details {
   font-size: 1.2em;
 }
 
+#book p:after {
+  content: " 🚙 ";
+  font-size: 2em;
+  color: var(--secondary-color);
+}
+
+#book {
+  text-align: center;
+  font-family: var(--accent-font);
+  font-size: 1.5rem;
+}
+
+#book a{
+  font-size: 2rem;
+  font-style: italic;
+  color: var(--secondary-color);
+  padding: 0 5px;
+}
 /* ============= Sections: Form Elements ============= */
 form {
   display: block;
@@ -661,6 +689,7 @@ form textarea {
   border-radius: 10px;
 }
 
+/* ============= Sections: Account Management ============= */
 #accountinfo p {
   margin-block-start: 0;
   margin-block-end: 0;
@@ -670,10 +699,15 @@ form textarea {
   margin-block-end: 10px;
 }
 
-#accountinfo, 
-#invmanagement  {
+#invmanagement,
+#accountinfo{
   display: block;
   width: fit-content;
+}
+
+#accountmanagement  {
+  display: block;
+  width: 100%;
   padding: 10px 20px;
 }
 
@@ -691,6 +725,31 @@ form textarea {
   font-weight: normal;
   line-height: 1.4em;
 }
+
+#testDrive {
+  margin-bottom: 50px;
+}
+
+.testdriveapts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 8px;
+}
+
+.tableheader {
+  font-weight: bold;
+}
+
+.testdriveapts:first-child {
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 5px 5px 0 0;
+}
+
+.testdriveapts:nth-child(even) {
+  background-color: var(--accent1light-color);
+}
+
 
 @media screen and (min-width:800px) {
   html {
@@ -796,5 +855,12 @@ form textarea {
 
   form {
     width: 50%;
+  }
+
+  .testdriveapts {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 2fr .5fr;
+    column-gap: 15px;
+    padding: 8px;
   }
 }

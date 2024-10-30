@@ -57,15 +57,24 @@ Util.buildAccountHome = async function (locals) {
             <p class='label'>Email: <span class='datafield'>${locals.accountData.account_email}</span></p>
             <p class='label'>Account Type: <span class='datafield'>${locals.accountData.account_type}</span></p>
             <a class='button' href='/account/update/${locals.accountData.account_id}'>Update Account Information</a>
-        </div >`
-
+        </div >
+        <hr>`
     if (locals.accountData.account_type == 'Admin' || locals.accountData.account_type == 'Employee') {
         accountHome += `
-        <hr>
+        
         <div id=invmanagement>
             <h3>Inventory Management Tools</h3>
             <a class='button' href='/inv'>Inventory Management</a>
-        </div>`
+        </div>
+        <hr>`
+    }
+    else {
+        accountHome += `
+        <div id=testDrive>
+            <h3>Ready to Drive?</h3>
+            <a class='button' href='/account/testdrive'>Book a Test Drive</a>
+        </div>
+        <hr>`
     }
     return accountHome
 }
@@ -107,7 +116,7 @@ Util.buildClassificationGrid = async function (data) {
 /* **************************************
 * Build the inventory detail view HTML
 * ************************************ */
-Util.buildInventoryDetail = async function (data) {
+Util.buildInventoryDetail = async function (data, locals) {
     let detailPage = `
         <div id='inv_details'>
             <div id='inv_photos'>
@@ -125,7 +134,18 @@ Util.buildInventoryDetail = async function (data) {
                 <section id="details">
                 <p>Odometer:  <span>${new Intl.NumberFormat('en-US').format(data.inv_miles)} miles</span></p>
                 <p>Exterior Color: <span>${data.inv_color}</span></p>
-                </section>           
+                </section> 
+                <section id="book">   
+                `
+    if (locals.loggedin) {
+        if (locals.accountData.account_type == 'Client') {
+            detailPage += `<p>Book a <a href='/account/testdrive'>Test Drive</a></p>`
+        }
+    } else {
+        detailPage += `<p><a href='/account/testdrive'>Login </a> to book a Test Drive</p>`
+    }
+    detailPage += `    
+                </section>  
             </div >
         </div>`
 
@@ -151,7 +171,56 @@ Util.buildClassificationSelect = async function (classification = null) {
     selectlist += `</select>`
     return selectlist
 }
+/* ************************
+ * Constructs the Vehicle HTML select
+ ************************** */
+Util.buildInventorySelect = async function (inv_id = null) {
+    let data = await invModel.getInventory()
+    let selectlist = `<label class='top' for="inv_id">Vehicle</label>
+                      <select name="inv_id" id="inv_id" required>
+                      <option value = "">Choose Vehicle</option>`
+    data.forEach((row) => {
+        if (inv_id == row.inv_id) {
+            selectlist += `<option value="${row.inv_id}" selected>${row.inv_year} ${row.inv_make} ${row.inv_model}</option>`
+        }
+        else {
+            selectlist += `<option value="${row.inv_id}">${row.inv_year} ${row.inv_make} ${row.inv_model}</option>`
+        }
+    })
+    selectlist += `</select>`
 
+    return selectlist
+}
+
+/* ************************
+ * Builds the Test Drive appointment view for logged in users
+ ************************** */
+Util.buildTestDriveView = async function (testDriveAptData = null) {
+    let testDriveHTML = ''
+    if (testDriveAptData.length > 0) {
+        testDriveHTML += ` 
+        <h3>Upcoming Test Drive Appointments</h3>
+        <div id='testdriveapt'>
+            <div class='testdriveapts'>
+                <span class='tableheader'>Account</span>
+                <span class='tableheader'>Date</span>
+                <span class='tableheader'>Vehicle</span>
+                <span class='tableheader'></span>
+            </div>
+        `
+        testDriveAptData.forEach((row) => {
+            testDriveHTML += `  
+            <div class='testdriveapts'>
+                <span>${row.account_id}: ${row.account_lastname}, ${row.account_firstname}</span> 
+                <span>${row.apt_date} ${row.apt_time}</span> 
+                <span><a href='/inv/detail/${row.inv_id}'> ${row.inv_id}: ${row.inv_year} ${row.inv_make} ${row.inv_model}</a></span>
+                <span><a class='buttonlink' href='/account/cancel/${row.apt_id}' title='Cancel'>Cancel</a></span>  
+            </div>    `
+        })
+        testDriveHTML += ` </div>`
+    }
+    return testDriveHTML
+}
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 

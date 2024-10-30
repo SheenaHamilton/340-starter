@@ -112,6 +112,38 @@ validate.accountPasswordRules = () => {
 }
 
 
+/*  **********************************
+  *  Test Drive Validation Rules
+  * ********************************* */
+validate.testDriveRules = () => {
+    return [
+        // account ID is required
+        body("inv_id")
+            .trim()
+            .escape()
+            .notEmpty()
+            .isLength({ min: 1 })
+            .withMessage("Please indicate a vehicle for the test drive."), // on error this message is sent.
+
+        // Date is required 
+        body("apt_date")
+            .trim()
+            .escape()
+            .notEmpty()
+            .isDate()
+            .withMessage("Please select a date for the test drive."), // on error this message is sent.
+
+        // time is required 
+        body("apt_time")
+            .trim()
+            .escape()
+            .notEmpty()
+            .isTime()
+            .withMessage("Please select a time for the test drive."), // on error this message is sent.
+
+    ]
+}
+
 /* ******************************
  * Check data and return errors or continue to registration
  * ***************************** */
@@ -135,6 +167,7 @@ validate.checkRegData = async (req, res, next) => {
     }
     next()
 }
+
 
 /* ******************************
  * Check data and return errors or continue to update the account
@@ -161,6 +194,43 @@ validate.checkUpdateData = async (req, res, next) => {
         return
     }
     next()
+}
+
+/* ******************************
+ * Check data and return errors or continue to update the account
+ * ***************************** */
+validate.checkTestDrive = async (req, res, next) => {
+    const { inv_id, apt_date, apt_time } = req.body
+    let errors = []
+
+    errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        let nav = await utilities.getNav()
+        const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
+        const vehicleSelect = await utilities.buildInventorySelect(inv_id)
+        const account_firstname = res.locals.accountData.account_firstname
+        const account_lastname = res.locals.accountData.account_lastname
+        const account_email = res.locals.accountData.account_email
+        const account_id = res.locals.accountData.account_id
+
+        res.render("account/testdrive", {
+            errors,
+            title: "Book a Test Drive",
+            nav,
+            headerLinks,
+            account_id,
+            apt_date,
+            apt_time,
+            vehicleSelect: vehicleSelect,
+            account_firstname,
+            account_lastname,
+            account_email,
+        })
+        return
+    }
+    next()
+
 }
 
 /* ******************************

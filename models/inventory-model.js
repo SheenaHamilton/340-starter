@@ -50,6 +50,19 @@ async function getInventoryByInvId(inv_id) {
 }
 
 /* ***************************
+ *  Get inventory items
+ * ************************** */
+async function getInventory() {
+    try {
+        const sql = `SELECT * FROM public.inventory`
+        const data = await pool.query(sql)
+        return data.rows
+    } catch (error) {
+        console.error("getInventory error " + error)
+    }
+}
+
+/* ***************************
  *  Check the classification table to see if the enterred classification exists
  * ************************** */
 async function checkExistingClassification(classification_name) {
@@ -146,4 +159,4 @@ async function checkExistingClassificationId(classification_id) {
     }
 }
 
-module.exports = { getClassifications, getInventoryByClassificationId, getInventoryByInvId, checkExistingClassification, addClassification, addInventory, checkExistingClassificationId, getClassificationName, updateInventory, deleteInventory };
+module.exports = { getClassifications, getInventoryByClassificationId, getInventoryByInvId, checkExistingClassification, addClassification, addInventory, checkExistingClassificationId, getClassificationName, updateInventory, deleteInventory, getInventory };

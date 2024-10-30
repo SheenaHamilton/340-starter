@@ -98,4 +98,54 @@ async function updatePassword(account_id, account_password) {
     }
 }
 
-module.exports = { registerAccount, checkExistingEmail, getAccountByEmail, getAccountByActId, checkUpdatedEmail, updateAccount, updatePassword };
+/* ***************************
+ *  Add the test drive appointment
+ * ************************** */
+async function addTestDrive(account_id, inv_id, apt_date, apt_time) {
+    try {
+        const sql = "INSERT INTO appointment (account_id, inv_id, apt_date, apt_time) VALUES ($1, $2, $3, $4) RETURNING *"
+        return await pool.query(sql, [account_id, inv_id, apt_date, apt_time])
+    } catch (error) {
+        return error.message
+    }
+}
+
+/* ***************************
+ *  Get the users test drive appointments
+ * ************************** */
+async function getUserTestDrives(account_id) {
+    try {
+        const sql = "SELECT a.account_id, a.account_lastname, a.account_firstname, i.inv_id, i.inv_year, i.inv_make, i.inv_model, ap.apt_id, TO_CHAR(ap.apt_date, 'Mon D, YYYY') apt_date, TO_CHAR(ap.apt_time,'HH:MI') apt_time FROM appointment ap INNER JOIN inventory i ON i.inv_id = ap.inv_id INNER JOIN account a ON a.account_id = ap.account_id WHERE a.account_id = $1 AND apt_date >= NOW() ORDER BY ap.apt_date asc,ap.apt_time asc"
+        const data = await pool.query(sql, [account_id])
+        return data.rows
+    } catch (error) {
+        return error.message
+    }
+}
+
+/* ***************************
+ *  Get all test drive appointments
+ * ************************** */
+async function getAllTestDrives() {
+    try {
+        const sql = "SELECT a.account_id, a.account_lastname, a.account_firstname, i.inv_id, i.inv_year, i.inv_make, i.inv_model, ap.apt_id, TO_CHAR(ap.apt_date, 'Mon D, YYYY') apt_date, TO_CHAR(ap.apt_time,'HH:MI') apt_time FROM appointment ap INNER JOIN inventory i ON i.inv_id = ap.inv_id INNER JOIN account a ON a.account_id = ap.account_id WHERE apt_date >= NOW() ORDER BY ap.apt_date asc,ap.apt_time asc"
+        const data = await pool.query(sql)
+        return data.rows
+    } catch (error) {
+        return error.message
+    }
+}
+
+/* ***************************
+ *  Cancel Appointment
+ * ************************** */
+async function cancelTestDrive(apt_id) {
+    try {
+        const sql = "DELETE FROM appointment WHERE apt_id = $1 RETURNING *"
+        return await pool.query(sql, [apt_id])
+    } catch (error) {
+        return error.message
+    }
+}
+
+module.exports = { registerAccount, checkExistingEmail, getAccountByEmail, getAccountByActId, checkUpdatedEmail, updateAccount, updatePassword, addTestDrive, getUserTestDrives, getAllTestDrives, cancelTestDrive };

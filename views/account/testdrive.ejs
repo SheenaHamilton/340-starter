@@ -1,0 +1,37 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+<% } else { res.redirect('/') } %>
+
+<%- messages() %>
+
+<% if (errors) { %>
+    <ul class="notice">
+        <% errors.array().forEach(error=> { %>
+            <li>
+                <%= error.msg %>
+            </li>
+            <% }) %>
+    </ul>
+<% } %>
+
+<form action='/account/testDrive' method='post'>
+    <div id='testdrive'>
+        <h3>Appointment Information:</h3>
+        <p class='label'>First Name: <span class='datafield'><%= account_firstname %></span></p>
+        <p class='label'>Last Name: <span class='datafield'><%= account_lastname %></span></p>
+        <p class='label'>Email: <span class='datafield'><%= account_email %></span></p>
+
+        <div id="apptoptions">
+            <%-vehicleSelect%>
+
+            <label class='top' for='apt_date'>Date:</label>
+            <input type='date' id='apt_date' name='apt_date' required value='<%= apt_date %>'>
+            
+            <label class='top' for='apt_time'>Appointment Time</label>
+            <input type='time' id='apt_time' name='apt_time' min="09:00" max="18:00" required value='<%= apt_time %>'>
+        </div>
+    </div>
+
+    <input class='button' type='submit' id='bookTestDrive' value='Book Test Drive'>
+</form>
+<script src="../../js/testdrive.js"></script>

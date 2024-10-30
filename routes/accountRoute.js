@@ -34,4 +34,14 @@ router.post("/update/", utilities.checkLogin, accountValidate.accountUpdateRules
 // Process the Account Password Update
 router.post("/updatePassword/", utilities.checkLogin, accountValidate.accountPasswordRules(), accountValidate.checkUpdatePassword, utilities.handleErrors(actController.updatePassword))
 
+// Get the test drive page
+router.get("/testdrive", utilities.checkLogin, utilities.handleErrors(actController.buildTestDrive))
+
+// Process the Test Drive appointment
+router.post("/testdrive", utilities.checkLogin, accountValidate.testDriveRules(), accountValidate.checkTestDrive, utilities.handleErrors(actController.bookTestDrive))
+
+// Process the Test Drive appointment
+router.get("/cancel/:apt_id", utilities.checkLogin, utilities.handleErrors(actController.cancelTestDrive))
+
+
 module.exports = router;

@@ -36,6 +36,57 @@ async function buildRegister(req, res, next) {
 }
 
 /* ****************************************
+*  Deliver account management view
+* *************************************** */
+async function buildAccountManagement(req, res, next) {
+    let nav = await utilities.getNav()
+    const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
+    const accountView = await utilities.buildAccountHome(res.locals)
+    let testDriveData
+
+    if (res.locals.accountData.account_type == 'Admin' || res.locals.accountData.account_type == 'Employee') {
+        testDriveData = await accountModel.getAllTestDrives()
+    } else {
+        testDriveData = await accountModel.getUserTestDrives(res.locals.accountData.account_id)
+    }
+    const testDriveView = await utilities.buildTestDriveView(testDriveData)
+
+    res.render("./account/account", {
+        title: "Account Management",
+        nav,
+        headerLinks,
+        accountView,
+        testDriveView,
+        errors: null,
+    })
+}
+
+/* ****************************************
+*  Deliver TestDrive view
+* *************************************** */
+async function buildTestDrive(req, res, next) {
+    let nav = await utilities.getNav()
+    const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
+    const vehicleSelect = await utilities.buildInventorySelect()
+    const account_firstname = res.locals.accountData.account_firstname
+    const account_lastname = res.locals.accountData.account_lastname
+    const account_email = res.locals.accountData.account_email
+    //TBD why need null vars, reg didn't need it
+    res.render("./account/testdrive", {
+        title: "Book a Test Drive",
+        nav,
+        headerLinks,
+        errors: null,
+        vehicleSelect: vehicleSelect,
+        account_firstname,
+        account_lastname,
+        account_email,
+        apt_date: null,
+        apt_time: null,
+    })
+}
+
+/* ****************************************
 *  Process Registration
 * *************************************** */
 async function registerAccount(req, res) {
@@ -129,22 +180,6 @@ async function accountLogin(req, res) {
 }
 
 
-
-/* ****************************************
-*  Deliver account management view
-* *************************************** */
-async function buildAccountManagement(req, res, next) {
-    let nav = await utilities.getNav()
-    const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
-    const accountView = await utilities.buildAccountHome(res.locals)
-    res.render("./account/account", {
-        title: "Account Management",
-        nav,
-        headerLinks,
-        accountView,
-        errors: null,
-    })
-}
 
 /* ****************************************
 *  Deliver account update view
@@ -265,4 +300,67 @@ async function updatePassword(req, res, next) {
 }
 
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountManagement, buildAccountUpdate, updateAccount, updatePassword }
+/* ****************************************
+*  Process the test drive and book appt
+* *************************************** */
+async function bookTestDrive(req, res) {
+    const { apt_date, apt_time, inv_id } = req.body
+    const account_id = res.locals.accountData.account_id
+    const aptResult = await accountModel.addTestDrive(account_id, inv_id, apt_date, apt_time)
+
+    if (aptResult) {
+        req.flash(
+            "notice",
+            `Congratulations, your test drive for ${apt_date} at ${apt_time} is booked!`
+        )
+        res.redirect("/account")
+    } else {
+        let nav = await utilities.getNav()
+        const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
+        const vehicleSelect = await utilities.buildInventorySelect(inv_id)
+        const account_firstname = res.locals.accountData.account_firstname
+        const account_lastname = res.locals.accountData.account_lastname
+        const account_email = res.locals.accountData.account_email
+
+        //Add the default for inv_id on dropdown.
+        req.flash("notice", "Sorry, the test drive booking has failed.")
+        res.render("./account/testdrive", {
+            title: "Book a Test Drive",
+            nav,
+            headerLinks,
+            errors: null,
+            vehicleSelect: vehicleSelect,
+            account_firstname,
+            account_lastname,
+            account_email,
+            apt_date,
+            apt_time,
+        })
+    }
+}
+
+/* ***************************
+ *  Delete Inventory Data
+ * ************************** */
+async function cancelTestDrive(req, res) {
+    let nav = await utilities.getNav()
+    const headerLinks = await utilities.getAccountHeaderLinks(res.locals)
+    const apt_id = parseInt(req.params.apt_id)
+
+    const deleteResult = await accountModel.cancelTestDrive(apt_id)
+
+    if (deleteResult) {
+        req.flash(
+            "notice",
+            `Your test drive was cancelled`
+        )
+
+    } else {
+        req.flash("error", "Sorry, the cancellation failed.")
+    }
+    res.redirect("/account")
+}
+
+
+
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountManagement, buildAccountUpdate, updateAccount, updatePassword, buildTestDrive, bookTestDrive, cancelTestDrive }
