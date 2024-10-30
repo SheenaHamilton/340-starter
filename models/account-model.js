@@ -115,7 +115,7 @@ async function addTestDrive(account_id, inv_id, apt_date, apt_time) {
  * ************************** */
 async function getUserTestDrives(account_id) {
     try {
-        const sql = "SELECT a.account_id, a.account_lastname, a.account_firstname, i.inv_id, i.inv_year, i.inv_make, i.inv_model, ap.apt_id, TO_CHAR(ap.apt_date, 'Mon D, YYYY') apt_date, TO_CHAR(ap.apt_time,'HH:MI') apt_time FROM appointment ap INNER JOIN inventory i ON i.inv_id = ap.inv_id INNER JOIN account a ON a.account_id = ap.account_id WHERE a.account_id = $1 AND apt_date >= current_date ORDER BY ap.apt_date asc,ap.apt_time asc"
+        const sql = "SELECT a.account_id, a.account_lastname, a.account_firstname, i.inv_id, i.inv_year, i.inv_make, i.inv_model, ap.apt_id, TO_CHAR(ap.apt_date, 'Mon DD, YYYY') apt_date, TO_CHAR(ap.apt_time,'HH:MI') apt_time FROM appointment ap INNER JOIN inventory i ON i.inv_id = ap.inv_id INNER JOIN account a ON a.account_id = ap.account_id WHERE a.account_id = $1 AND apt_date >= current_date ORDER BY ap.apt_date asc,ap.apt_time asc"
         const data = await pool.query(sql, [account_id])
         return data.rows
     } catch (error) {
@@ -128,7 +128,7 @@ async function getUserTestDrives(account_id) {
  * ************************** */
 async function getAllTestDrives() {
     try {
-        const sql = "SELECT a.account_id, a.account_lastname, a.account_firstname, i.inv_id, i.inv_year, i.inv_make, i.inv_model, ap.apt_id, TO_CHAR(ap.apt_date, 'Mon D, YYYY') apt_date, TO_CHAR(ap.apt_time,'HH:MI') apt_time FROM appointment ap INNER JOIN inventory i ON i.inv_id = ap.inv_id INNER JOIN account a ON a.account_id = ap.account_id WHERE apt_date >= current_date ORDER BY ap.apt_date asc,ap.apt_time asc"
+        const sql = "SELECT a.account_id, a.account_lastname, a.account_firstname, i.inv_id, i.inv_year, i.inv_make, i.inv_model, ap.apt_id, TO_CHAR(ap.apt_date, 'Mon DD, YYYY') apt_date, TO_CHAR(ap.apt_time,'HH:MI') apt_time FROM appointment ap INNER JOIN inventory i ON i.inv_id = ap.inv_id INNER JOIN account a ON a.account_id = ap.account_id WHERE apt_date >= current_date ORDER BY ap.apt_date asc,ap.apt_time asc"
         const data = await pool.query(sql)
         return data.rows
     } catch (error) {
